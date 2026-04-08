@@ -9,4 +9,4 @@ message=$(echo -n "btrust builder 2026" | xxd -p | tr -d '/n')
 
 txid=$(bitcoin-cli -regtest decoderawtransaction "$transaction" | jq -r '.txid')
 
-bitcoin-cli -regtest -named createrawtransaction inputs='''[{"txid": "'$txid'", "vout": 0},{"txid":"'"$txid"'","vout":1}]''' outputs='''[{"2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP": 0.20000000},{"data": "'$message'"}]'''
+bitcoin-cli -regtest -named createrawtransaction inputs='''[{"txid": "'$txid'", "vout": 0},{"txid":"'"$txid"'","vout":1}]''' outputs='''[{"data": "'$message'"},{"2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP": 0.20000000}]'''
