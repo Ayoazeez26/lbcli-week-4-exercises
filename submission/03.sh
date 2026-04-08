@@ -9,12 +9,4 @@ message=$(echo -n "btrust builder 2026" | xxd -p)
 
 txid=$(bitcoin-cli -regtest decoderawtransaction "$transaction" | jq -r '.txid')
 
-change=$(bitcoin-cli -regtest getrawchangeaddress)
-
-rawtxhex=$(bitcoin-cli -regtest -named createrawtransaction inputs='''[{"txid": "'$txid'", "vout": 0}]''' outputs='''[{"2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP": 0.20000000}, {"data": "'$message'"}]''')
-
-funded=$(bitcoin-cli -regtest fundrawtransaction "$rawtxhex" '{"subtractFeeFromOutputs": [0]}' | jq -r '.hex')
-
-signed=$(bitcoin-cli -regtest signrawtransactionwithwallet "$funded" | jq -r '.hex')
-
-bitcoin-cli -regtest sendrawtransaction "$signed"
+bitcoin-cli -regtest -named createrawtransaction inputs='''[{"txid": "'$txid'", "vout": 0},{"txid":"'"$txid"'","vout":1}]''' outputs='''[{"2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP": 0.20000000},{"data": "'$message'"}]'''
